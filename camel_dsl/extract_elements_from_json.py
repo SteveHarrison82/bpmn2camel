@@ -58,14 +58,3 @@ class JsonUtil:
                                                                         self.to_uri(each_value['outgoings']))
                 gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(messageStartEvent2Camel)
                 logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
-
-
-
-
-
-
-
-
-
-
-
