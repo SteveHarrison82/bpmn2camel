@@ -1,0 +1,1 @@
+<route><to>seda:SequenceFlow_5a72990d85</to><from>activemq:my_queue</from></route>

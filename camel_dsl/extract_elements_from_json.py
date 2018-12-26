@@ -2,6 +2,8 @@ import json
 import logging
 from Json2Camel import ServiceTask2Camel
 from Json2Camel import ServiceTask2CamelRouteXML
+from Json2Camel import MessageStartEvent2Camel
+from Json2Camel import MessageStartEvent2CamelRouteXML
 
 logging.basicConfig(filename='example.log',level=logging.DEBUG)
 
@@ -21,6 +23,10 @@ class JsonUtil:
     def from_uri(self, bpmn_ref_incomings):
         incoming = bpmn_ref_incomings[0]
         from_uri = "seda:" + incoming
+        return from_uri
+
+    def from_source(self, msg_source):
+        from_uri = 'activemq:' + 'my_queue'
         return from_uri
 
     def to_uri (self, bpmn_ref_outgoings):
@@ -46,6 +52,19 @@ class JsonUtil:
                                                                         )
                 gen_servicetask_route = ServiceTask2CamelRouteXML.ServiceTask2CamelRouteXML(serviceTask2Camel)
                 logging.info('generated xml is: ' + gen_servicetask_route.save_servicetask_routes())
+
+            if each_value['node_type'] == "StartEvent":
+                messageStartEvent2Camel = MessageStartEvent2Camel.MessageStartEvent2Camel(self.from_source('my_queue'),
+                                                                        self.to_uri(each_value['outgoings']))
+                gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(messageStartEvent2Camel)
+                logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
+
+
+
+
+
+
+
 
 
 
