@@ -1,0 +1,52 @@
+import json
+import logging
+from Json2Camel import ServiceTask2Camel
+from Json2Camel import ServiceTask2CamelRouteXML
+
+logging.basicConfig(filename='example.log',level=logging.DEBUG)
+
+json_file = "../test/bpmn2json.json"
+
+class JsonUtil:
+
+    def load_elements(self):
+        with open(json_file) as file:
+            self.loaded_json = {}
+            bpmn_elements = file.read()
+            self.loaded_json = json.loads(bpmn_elements)
+            for x in self.loaded_json:
+                logging.info("%s: %s" % (x, self.loaded_json[x]))
+        return self.loaded_json
+
+    def from_uri(self, bpmn_ref_incomings):
+        incoming = bpmn_ref_incomings[0]
+        from_uri = "seda:" + incoming
+        return from_uri
+
+    def to_uri (self, bpmn_ref_outgoings):
+        outgoing = bpmn_ref_outgoings[0]
+        to_uri = "seda:" + outgoing
+        return to_uri
+
+    def process_to_execute (self, bpmn_ref_process):
+        process_to_execute = bpmn_ref_process
+        return process_to_execute
+
+    def find_camel_elements(self):
+
+        camel_elements = self.load_elements()
+        for each_key, each_value in camel_elements.iteritems():
+            logging.info('node is: ' + each_key)
+            logging.info('node content is: ' + str(each_value))
+            logging.info('node type is: ' + str(each_value['node_type']))
+            if each_value['node_type'] == "ServiceTask":
+                serviceTask2Camel = ServiceTask2Camel.ServiceTask2Camel(self.from_uri(each_value['incomings']),
+                                                                        self.to_uri(each_value['outgoings']),
+                                                                        self.process_to_execute(each_value['node_name'])
+                                                                        )
+                gen_servicetask_route = ServiceTask2CamelRouteXML.ServiceTask2CamelRouteXML(serviceTask2Camel)
+                logging.info('generated xml is: ' + gen_servicetask_route.save_servicetask_routes())
+
+
+
+

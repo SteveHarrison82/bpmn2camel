@@ -1,0 +1,18 @@
+<route><process>LOAD_SAP_PLANNED_ORDER</process><to>seda:SequenceFlow_ac081d4ed4</to><from>seda:SequenceFlow_42074a1883</from></route>
+<route><process>LOAD_SAP_DELIVERY</process><to>seda:SequenceFlow_64202544c6</to><from>seda:SequenceFlow_09l3zvm</from></route>
+<route><process>LOAD_SAP_PURCHASE_REQ</process><to>seda:SequenceFlow_11d8bb26c5</to><from>seda:SequenceFlow_0757ec375d</from></route>
+<route><process>SAP_TO_E2PR_IWT01</process><to>seda:SequenceFlow_ae3c3ec1e1</to><from>seda:SequenceFlow_3c26ec1f54</from></route>
+<route><process>LOAD_SAP_VENDOR_CONF</process><to>seda:SequenceFlow_40d6968b34</to><from>seda:SequenceFlow_b05f3dcfe5</from></route>
+<route><process>SAP_TO_E2PR_CUSTORD01</process><to>seda:SequenceFlow_6d1a0d89de</to><from>seda:SequenceFlow_77a50b428a</from></route>
+<route><process>LOAD_SAP_INVENTORY_RESERVATION</process><to>seda:SequenceFlow_42074a1883</to><from>seda:SequenceFlow_dbcc00b2ac</from></route>
+<route><process>SAP_TO_E2PR_PRODORD01</process><to>seda:SequenceFlow_6328629949</to><from>seda:SequenceFlow_988e696f73</from></route>
+<route><process>Message Normalizer</process><to>seda:SequenceFlow_09l3zvm</to><from>seda:SequenceFlow_98468910c1</from></route>
+<route><process>SAP_TO_E2PR_GI01</process><to>seda:SequenceFlow_08df01c902</to><from>seda:SequenceFlow_3b67d14d95</from></route>
+<route><process>LOAD_SAP_SALES_ORDER</process><to>seda:SequenceFlow_e43188ffd7</to><from>seda:SequenceFlow_11d8bb26c5</from></route>
+<route><process>Remove Inbound data files</process><to>seda:SequenceFlow_194ee548b4</to><from>seda:SequenceFlow_40d6968b34</from></route>
+<route><process>LOAD_SAP_DEMAND_SCH_AGREEMENT</process><to>seda:SequenceFlow_dbcc00b2ac</to><from>seda:SequenceFlow_64202544c6</from></route>
+<route><process>SAP_TO_E2PR_INV01</process><to>seda:SequenceFlow_7d762ee515</to><from>seda:SequenceFlow_baa9530f4f</from></route>
+<route><process>LOAD_SAP_PURCHASE_ORDER</process><to>seda:SequenceFlow_0757ec375d</to><from>seda:SequenceFlow_6c58d3e5a9</from></route>
+<route><process>SAP_TO_E2PR_EXPRCPT01</process><to>seda:SequenceFlow_78e46a143e</to><from>seda:SequenceFlow_d17ed97d00</from></route>
+<route><process>LOAD_SAP_PRODUCTION_ORDER</process><to>seda:SequenceFlow_6c58d3e5a9</to><from>seda:SequenceFlow_ac081d4ed4</from></route>
+<route><process>LOAD_SAP_SUPPLY_SCH_AGREEMENT</process><to>seda:SequenceFlow_b05f3dcfe5</to><from>seda:SequenceFlow_e43188ffd7</from></route>

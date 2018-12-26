@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<routes xmlns="http://camel.apache.org/schema/spring">
+    <route autoStartup="true" customId="true" id="Process_909bfade9a">
+        <description>{"routeId":"Process_909bfade9a","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.StartEvent_6324452ea4" uri="activemq://MESSAGEFLOW_INBOUND:MOCK-E2NET:b2bc:ecctd-2.0?concurrentConsumers=1&amp;maxConcurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <to customId="true" id="Process_909bfade9a.IntermediateThrowEvent_64d5f94d0b" uri="bean://technicalAcknowledgementProducerProcessor"/>
+        <pipeline customId="true" id="Process_909bfade9a.pipeline">
+            <to customId="true" id="Process_909bfade9a.pipeline.ServiceTask_0uw55zd" uri="bean:messageNormalizerProcessor?method=process(*, IGNORE, %s.%s)"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_01e6006cf5" ref="LOAD_SAP_DELIVERY"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_91c5dcf9cb" ref="LOAD_SAP_DEMAND_SCH_AGREEMENT"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_c90c6edb82" ref="LOAD_SAP_INVENTORY_RESERVATION"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_7ba00bdc32" ref="LOAD_SAP_PLANNED_ORDER"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_54b9ab07d4" ref="LOAD_SAP_PRODUCTION_ORDER"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_813ae4e989" ref="LOAD_SAP_PURCHASE_ORDER"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_8edb5256b9" ref="LOAD_SAP_PURCHASE_REQ"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_72dd59141d" ref="LOAD_SAP_SALES_ORDER"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_5ccd6ee8ac" ref="LOAD_SAP_SUPPLY_SCH_AGREEMENT"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_2387df3cf0" ref="LOAD_SAP_VENDOR_CONF"/>
+            <process customId="true" id="Process_909bfade9a.pipeline.ServiceTask_4c5f94fe21" ref="PUSH_FCST01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.ParallelGateway_2c8b4b02e1.to" pattern="InOut" uri="seda:TEMP:SELF:ParallelGateway_2c8b4b02e1:0-1.0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_InclusiveGateway_ef467c2e5a">
+        <description>{"routeId":"Process_909bfade9a.Route_InclusiveGateway_ef467c2e5a","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_InclusiveGateway_ef467c2e5a.from" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <aggregate completionTimeoutCheckerInterval="1000" customId="true" id="Process_909bfade9a.Route_InclusiveGateway_ef467c2e5a.InclusiveGateway_ef467c2e5a" strategyRef="conditionalAggregationStrategy">
+            <correlationExpression>
+                <expressionDefinition/>
+            </correlationExpression>
+            <to customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.to" pattern="InOut" uri="seda:TEMP:SELF:IntermediateThrowEvent_057d57f432:0?timeout=-1"/>
+        </aggregate>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432">
+        <description>{"routeId":"Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.from" uri="seda:TEMP:SELF:IntermediateThrowEvent_057d57f432:0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <to customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.IntermediateThrowEvent_057d57f432.preProcessor" uri="bean:preProcessor?method=process(*, activemq://MESSAGEFLOW_OUTBOUND:MOCK-E2PR:e2pr:dtgtd-1.0, TECH_ACK_RECEIVED, Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.IntermediateThrowEvent_057d57f432)"/>
+        <to customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.IntermediateThrowEvent_057d57f432" uri="bean:outboundMessageProcessor?method=process(*, activemq://MESSAGEFLOW_OUTBOUND:MOCK-E2PR:e2pr:dtgtd-1.0)"/>
+        <enrich aggregateOnException="false" customId="true" id="Process_909bfade9a.IntermediateCatchEvent_2f2c842bfb" shareUnitOfWork="false">
+            <constant>bean://technicalAcknowledgementConsumerProcessor</constant>
+        </enrich>
+        <to customId="true" id="Process_909bfade9a.Route_IntermediateThrowEvent_057d57f432.ServiceTask_0pntk29.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_0pntk29:0?timeout=86400000"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1">
+        <description>{"routeId":"Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1.from" uri="seda:TEMP:SELF:ParallelGateway_2c8b4b02e1:0-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <to customId="true" id="Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1.successConditionProcessor" uri="bean:successConditionProcessor?method=process(*, NO_ERROR)"/>
+        <multicast customId="true" id="Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1.ParallelGateway_2c8b4b02e1" onPrepareRef="onPrepareProcessor" parallelProcessing="true" stopOnException="true" strategyRef="defaultAggregatorStrategy" timeout="86400000">
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_06a558e528:0-1.0?timeout=-1"/>
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_3e95949d05:1-1.0?timeout=-1"/>
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_7cf4697429:2-1.0?timeout=-1"/>
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_35a8f4c877:3-1.0?timeout=-1"/>
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_bd97f3175b:4-1.0?timeout=-1"/>
+            <to customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.to" pattern="InOut" uri="seda:TEMP:SELF:ServiceTask_ed3613f8e5:5-1.0?timeout=-1"/>
+        </multicast>
+        <process customId="true" id="Process_909bfade9a.Route_ParallelGateway_2c8b4b02e1.ParallelGateway_2c8b4b02e1.multicastCompleteConditionProcessor" ref="multicastCompleteConditionProcessor"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_06a558e528","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.from" uri="seda:TEMP:SELF:ServiceTask_06a558e528:0-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.pipeline.ServiceTask_06a558e528" ref="SAP_TO_E2PR_IWT01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_06a558e528.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_06a558e528.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_3e95949d05","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.from" uri="seda:TEMP:SELF:ServiceTask_3e95949d05:1-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.pipeline.ServiceTask_3e95949d05" ref="SAP_TO_E2PR_EXPRCPT01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_3e95949d05.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_3e95949d05.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_7cf4697429","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.from" uri="seda:TEMP:SELF:ServiceTask_7cf4697429:2-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.pipeline.ServiceTask_7cf4697429" ref="SAP_TO_E2PR_PRODORD01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_7cf4697429.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_7cf4697429.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_35a8f4c877","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.from" uri="seda:TEMP:SELF:ServiceTask_35a8f4c877:3-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.pipeline.ServiceTask_35a8f4c877" ref="SAP_TO_E2PR_INV01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_35a8f4c877.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_35a8f4c877.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_bd97f3175b","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.from" uri="seda:TEMP:SELF:ServiceTask_bd97f3175b:4-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.pipeline.ServiceTask_bd97f3175b" ref="SAP_TO_E2PR_GI01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_bd97f3175b.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_bd97f3175b.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5">
+        <description>{"routeId":"Process_909bfade9a.Route_ServiceTask_ed3613f8e5","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.from" uri="seda:TEMP:SELF:ServiceTask_ed3613f8e5:5-1.0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <pipeline customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.pipeline">
+            <process customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.pipeline.ServiceTask_ed3613f8e5" ref="SAP_TO_E2PR_CUSTORD01"/>
+        </pipeline>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.2_endpointHeaderProcessor" uri="bean:endpointHeaderProcessor?method=process(*, Process_909bfade9a.Route_ServiceTask_ed3613f8e5.2_endpointHeaderProcessor)"/>
+        <to customId="true" id="Process_909bfade9a.Route_ServiceTask_ed3613f8e5.InclusiveGateway_ef467c2e5a.to" pattern="InOut" uri="seda:TEMP:SELF:InclusiveGateway_ef467c2e5a:0?timeout=-1"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.ServiceTask_0pntk29">
+        <description>{"routeId":"Process_909bfade9a.ServiceTask_0pntk29","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.from" uri="seda:TEMP:SELF:ServiceTask_0pntk29:0?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <to customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.subProcessPreProcessor" uri="bean:subProcessPreProcessor?method=process(*, seda://INBOUND:SELF:TEMP:ServiceTask_0pntk29?timeout=86400000, ServiceTask_0pntk29)"/>
+        <to customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.post.to" pattern="InOut" uri="seda://INBOUND:SELF:TEMP:MessageFlow_1wxvumy14ww3wn?timeout=86400000"/>
+    </route>
+    <route autoStartup="true" customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.post">
+        <description>{"routeId":"Process_909bfade9a.ServiceTask_0pntk29.post","displayName":"Ecctd","description":null}</description>
+        <from customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.post.from" uri="seda://INBOUND:SELF:TEMP:ServiceTask_0pntk29?concurrentConsumers=1"/>
+        <onException customId="true" id="Process_909bfade9a.onException" useOriginalMessage="true">
+            <redeliveryPolicy maximumRedeliveries="0" retryAttemptedLogLevel="WARN"/>
+            <process customId="true" id="Process_909bfade9a.routeExceptionProcessor" ref="routeExceptionProcessor"/>
+        </onException>
+        <to customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.subProcessPostProcessor" uri="bean:subProcessPostProcessor?method=process(*, ServiceTask_0pntk29)"/>
+        <onCompletion customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.post.EndEvent_9ad6e1dced.onCompletion">
+            <process customId="true" id="Process_909bfade9a.ServiceTask_0pntk29.post.EndEvent_9ad6e1dced.onCompletion.boundaryCompleteProcessor" ref="boundaryCompleteProcessor"/>
+        </onCompletion>
+    </route>
+</routes>
