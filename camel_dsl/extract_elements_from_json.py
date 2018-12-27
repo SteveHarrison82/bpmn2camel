@@ -4,6 +4,9 @@ from Json2Camel import ServiceTask2Camel
 from Json2Camel import ServiceTask2CamelRouteXML
 from Json2Camel import MessageStartEvent2Camel
 from Json2Camel import MessageStartEvent2CamelRouteXML
+from Json2Camel import ParallelGateway2Camel
+from Json2Camel import ParallelGateway2CamelRouteXML
+
 
 logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
@@ -34,6 +37,11 @@ class JsonUtil:
         to_uri = "seda:" + outgoing
         return to_uri
 
+    def multiple_receipients(self, bpmn_ref_outgoings):
+        mul_receipients = {}
+        mul_receipients["multicast"] = bpmn_ref_outgoings
+        return mul_receipients
+
     def process_to_execute(self, bpmn_ref_process):
         process_to_execute = bpmn_ref_process
         return process_to_execute
@@ -60,3 +68,12 @@ class JsonUtil:
                 gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(
                     messageStartEvent2Camel)
                 logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
+
+            if each_value['node_type'] == "ParallelGateway":
+                parallelGateway2Camel = ParallelGateway2Camel.ParallelGateway2Camel(self.from_uri(each_value['incomings']),
+                                                                                          self.multiple_receipients(
+                                                                                              each_value['outgoings']))
+                gen_parallel_gateway_route = ParallelGateway2CamelRouteXML.ParallelGateway2CamelRouteXML(
+                    parallelGateway2Camel)
+                logging.info('generated xml is: ' + gen_parallel_gateway_route.save_parallelgateway_routes())
+
