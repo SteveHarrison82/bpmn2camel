@@ -5,12 +5,12 @@ from Json2Camel import ServiceTask2CamelRouteXML
 from Json2Camel import MessageStartEvent2Camel
 from Json2Camel import MessageStartEvent2CamelRouteXML
 
-logging.basicConfig(filename='example.log',level=logging.DEBUG)
+logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
 json_file = "../test/bpmn2json.json"
 
-class JsonUtil:
 
+class JsonUtil:
     def load_elements(self):
         with open(json_file) as file:
             self.loaded_json = {}
@@ -29,12 +29,12 @@ class JsonUtil:
         from_uri = 'activemq:' + 'my_queue'
         return from_uri
 
-    def to_uri (self, bpmn_ref_outgoings):
+    def to_uri(self, bpmn_ref_outgoings):
         outgoing = bpmn_ref_outgoings[0]
         to_uri = "seda:" + outgoing
         return to_uri
 
-    def process_to_execute (self, bpmn_ref_process):
+    def process_to_execute(self, bpmn_ref_process):
         process_to_execute = bpmn_ref_process
         return process_to_execute
 
@@ -55,6 +55,8 @@ class JsonUtil:
 
             if each_value['node_type'] == "StartEvent":
                 messageStartEvent2Camel = MessageStartEvent2Camel.MessageStartEvent2Camel(self.from_source('my_queue'),
-                                                                        self.to_uri(each_value['outgoings']))
-                gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(messageStartEvent2Camel)
+                                                                                          self.to_uri(
+                                                                                              each_value['outgoings']))
+                gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(
+                    messageStartEvent2Camel)
                 logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())

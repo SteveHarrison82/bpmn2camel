@@ -1,7 +1,7 @@
 import lxml.etree as et
 
-class Json2CamelUtil:
 
+class Json2CamelUtil:
     def __init__(self, element2camel):
         self.element2camel = element2camel
 
@@ -10,7 +10,7 @@ class Json2CamelUtil:
         return et.tostring(self.buildxml(route, self.element2camel.get_as_dict()))
 
     def buildxml(self, route, xml_ele):
-        stc  = xml_ele
+        stc = xml_ele
         if isinstance(stc, dict):
             for each_key, each_value in stc.iteritems():
                 s = et.SubElement(route, each_key)

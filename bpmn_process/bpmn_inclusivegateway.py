@@ -1,5 +1,6 @@
 class InclusiveGateway:
-    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_incoming = None, bpmn_outgoing = None, bpmn_configuration_properties = None):
+    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_incoming=None, bpmn_outgoing=None,
+                 bpmn_configuration_properties=None):
 
         if bpmn_incoming is None:
             bpmn_outgoing = []

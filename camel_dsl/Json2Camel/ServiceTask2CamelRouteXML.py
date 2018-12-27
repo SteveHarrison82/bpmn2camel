@@ -4,7 +4,6 @@ from camel_dsl.Json2Camel.Json2CamelUtil import Json2CamelUtil
 
 
 class ServiceTask2CamelRouteXML:
-
     def __init__(self, serviceTask2Camel):
         self.serviceTask2Camel = serviceTask2Camel
 

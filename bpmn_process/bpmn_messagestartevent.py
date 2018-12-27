@@ -1,5 +1,5 @@
 class MessageStartEvent:
-    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_outgoing = None, bpmn_configuration_properties = None):
+    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_outgoing=None, bpmn_configuration_properties=None):
 
         if bpmn_outgoing is None:
             bpmn_outgoing = []

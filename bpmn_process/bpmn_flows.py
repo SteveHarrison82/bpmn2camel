@@ -1,6 +1,5 @@
 class sequentialFlow:
-    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_configuration_properties = None):
-
+    def __init__(self, bpmn_node_name, bpmn_id, node_type, bpmn_configuration_properties=None):
         if bpmn_configuration_properties is None:
             bpmn_configuration_properties = {}
 
