@@ -15,36 +15,29 @@ class Json2CamelUtil:
         stc = xml_ele
         if isinstance(stc, dict):
             for each_key, each_value in stc.iteritems():
-                # subi.set(attr, value)
                 s = et.SubElement(route, each_key)
                 self.buildxml(s, each_value)
         elif isinstance(stc, tuple) or isinstance(stc, list):
             for each_value_of_element2camel in stc:
                 s = et.SubElement(route, 'to')
                 self.buildxml(s, each_value_of_element2camel)
+
         elif isinstance(stc, basestring):
-            if route.tag == 'from':
-                route.set('url', stc)
-
-            elif route.tag == 'to':
-                route.set('url', stc)
-
-            elif route.tag == 'process':
-                route.set('ref', stc)
-
-            else:
-                route.text = stc
+            self._handle_attribute(route, stc)
         else:
-
-            if route.tag == 'from':
-                route.set('url', stc)
-
-            elif route.tag == 'to':
-                route.set('url', stc)
-
-            elif route.tag == 'process':
-                route.set('ref', stc)
-
-            else:
-                route.text = stc
+            self._handle_attribute(route, stc)
         return route
+        # recursion: basecase
+
+    def _handle_attribute(self, route, stc):
+        if route.tag == 'from':
+            route.set('url', stc)
+
+        elif route.tag == 'to':
+            route.set('url', stc)
+
+        elif route.tag == 'process':
+            route.set('ref', stc)
+
+        else:
+            route.text = stc

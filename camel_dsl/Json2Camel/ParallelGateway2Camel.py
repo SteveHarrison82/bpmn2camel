@@ -15,9 +15,11 @@ class ParallelGateway2Camel:
         return self.multicast_receipients
 
     def get_as_dict(self):
+        parallel_gateway_as_dict = {}
+
         x = self._get_as_dict_fromuri()
         y = self._get_as_dict_multicast()
-        parallel_gateway_as_dict = {}
+
         parallel_gateway_as_dict = x.copy()  # start with x's keys and values
         parallel_gateway_as_dict.update(y)   # modifies z with y's keys and values & returns None
         return parallel_gateway_as_dict
