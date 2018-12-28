@@ -3,8 +3,8 @@ import unittest
 
 from bpmn_process.bpmn2json import BpmnXml2py
 
-class B2JsoonConvertertest(unittest.TestCase):
 
+class B2JsoonConvertertest(unittest.TestCase):
     sample_xml = "./bpmn/camunda_xml.bpmn"
     xml2py = None
 
