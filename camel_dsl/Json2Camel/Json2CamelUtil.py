@@ -1,4 +1,6 @@
 import lxml.etree as et
+
+
 # reference: https://code.activestate.com/recipes/577882-convert-a-nested-python-data-structure-to-xml/
 
 class Json2CamelUtil:
@@ -13,6 +15,7 @@ class Json2CamelUtil:
         stc = xml_ele
         if isinstance(stc, dict):
             for each_key, each_value in stc.iteritems():
+                # subi.set(attr, value)
                 s = et.SubElement(route, each_key)
                 self.buildxml(s, each_value)
         elif isinstance(stc, tuple) or isinstance(stc, list):
@@ -20,7 +23,28 @@ class Json2CamelUtil:
                 s = et.SubElement(route, 'to')
                 self.buildxml(s, each_value_of_element2camel)
         elif isinstance(stc, basestring):
-            route.text = stc
+            if route.tag == 'from':
+                route.set('url', stc)
+
+            elif route.tag == 'to':
+                route.set('url', stc)
+
+            elif route.tag == 'process':
+                route.set('ref', stc)
+
+            else:
+                route.text = stc
         else:
-            route.text = str(stc)
+
+            if route.tag == 'from':
+                route.set('url', stc)
+
+            elif route.tag == 'to':
+                route.set('url', stc)
+
+            elif route.tag == 'process':
+                route.set('ref', stc)
+
+            else:
+                route.text = stc
         return route

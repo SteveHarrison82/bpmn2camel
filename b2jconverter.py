@@ -45,6 +45,7 @@ class BpmnXml2py:
                 self.end_point_configuration__properties = self.get_configuration_properties(
                     each_element_of_mf.bpmn_extensionElements.camunda_properties.camunda_property)
                 self.end_point_incoming = self.get_incomings(each_element_of_mf)
+
                 endpoint = bpmn_endevent.EndEvent(self.end_point_name, self.end_point_id, "EndEvent",
                                                   self.end_point_incoming, self.end_point_configuration__properties)
                 s = json.dumps(endpoint.__dict__)

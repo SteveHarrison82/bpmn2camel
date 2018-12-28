@@ -1,1 +1,0 @@
-<route><multicast><to>SequenceFlow_77a50b428a</to><to>SequenceFlow_3b67d14d95</to><to>SequenceFlow_3c26ec1f54</to><to>SequenceFlow_d17ed97d00</to><to>SequenceFlow_baa9530f4f</to><to>SequenceFlow_988e696f73</to></multicast><from>seda:SequenceFlow_194ee548b4</from></route>

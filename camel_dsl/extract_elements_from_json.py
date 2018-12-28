@@ -6,7 +6,8 @@ from Json2Camel import MessageStartEvent2Camel
 from Json2Camel import MessageStartEvent2CamelRouteXML
 from Json2Camel import ParallelGateway2Camel
 from Json2Camel import ParallelGateway2CamelRouteXML
-
+from Json2Camel import EndEvent2Camel
+from Json2Camel import EndEvent2CamelRouteXML
 
 logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
@@ -39,7 +40,11 @@ class JsonUtil:
 
     def multiple_receipients(self, bpmn_ref_outgoings):
         mul_receipients = {}
-        mul_receipients["multicast"] = bpmn_ref_outgoings
+        bpmn_ref_outgoings_with_queues = []
+        use_queue = "seda:"
+        for each_value in bpmn_ref_outgoings:
+            bpmn_ref_outgoings_with_queues.append(use_queue + each_value)
+        mul_receipients["multicast"] = bpmn_ref_outgoings_with_queues
         return mul_receipients
 
     def process_to_execute(self, bpmn_ref_process):
@@ -70,10 +75,16 @@ class JsonUtil:
                 logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
 
             if each_value['node_type'] == "ParallelGateway":
-                parallelGateway2Camel = ParallelGateway2Camel.ParallelGateway2Camel(self.from_uri(each_value['incomings']),
-                                                                                          self.multiple_receipients(
-                                                                                              each_value['outgoings']))
+                parallelGateway2Camel = ParallelGateway2Camel.ParallelGateway2Camel(
+                    self.from_uri(each_value['incomings']),
+                    self.multiple_receipients(
+                        each_value['outgoings']))
                 gen_parallel_gateway_route = ParallelGateway2CamelRouteXML.ParallelGateway2CamelRouteXML(
                     parallelGateway2Camel)
                 logging.info('generated xml is: ' + gen_parallel_gateway_route.save_parallelgateway_routes())
 
+            if each_value['node_type'] == "EndEvent":
+                endEvent2Camel = EndEvent2Camel.EndEvent2Camel(self.from_uri(each_value['incomings']))
+                gen_end_event_route = EndEvent2CamelRouteXML.EndEvent2CamelRouteXML(
+                    endEvent2Camel)
+                logging.info('generated xml is: ' + gen_end_event_route.save_endevent_routes())
