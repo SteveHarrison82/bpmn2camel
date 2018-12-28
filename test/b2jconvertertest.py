@@ -1,6 +1,7 @@
-from b2jconverter import BpmnXml2py
 import os
 import unittest
+
+from bpmn_process.bpmn2json import BpmnXml2py
 
 class B2JsoonConvertertest(unittest.TestCase):
 
