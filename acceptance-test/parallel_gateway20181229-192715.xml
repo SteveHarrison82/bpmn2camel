@@ -1,0 +1,1 @@
+<route><multicast><to uri="seda:SequenceFlow_77a50b428a"/><to uri="seda:SequenceFlow_3b67d14d95"/><to uri="seda:SequenceFlow_3c26ec1f54"/><to uri="seda:SequenceFlow_d17ed97d00"/><to uri="seda:SequenceFlow_baa9530f4f"/><to uri="seda:SequenceFlow_988e696f73"/></multicast><from uri="seda:SequenceFlow_194ee548b4"/></route>

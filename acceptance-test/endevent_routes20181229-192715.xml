@@ -1,0 +1,1 @@
+<route><process ref="outbound_process"/><to uri="seda:outbound"/><from uri="seda:SequenceFlow_01sn56j"/></route>

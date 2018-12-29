@@ -13,7 +13,7 @@ from camel_dsl.Json2Camel import InclusiveGateway2CamelRouteXML
 
 logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
-json_file = "../test/bpmn2json.json"
+json_file = "../acceptance-test/bpmn2json.json"
 
 
 class JsonUtil:
