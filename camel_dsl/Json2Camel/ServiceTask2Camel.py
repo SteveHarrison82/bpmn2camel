@@ -5,6 +5,6 @@ class ServiceTask2Camel:
         self.to_uri = to_uri
         self.process_to_execute = process_to_execute
 
-    def get_as_dict(self):
+    def get_routes_as_dict(self):
         servicetask_as_dict = {'from': self.from_uri, 'to': self.to_uri, 'process': self.process_to_execute}
         return servicetask_as_dict

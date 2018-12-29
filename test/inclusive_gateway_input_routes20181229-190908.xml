@@ -1,0 +1,7 @@
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_6328629949"/></route>
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_7d762ee515"/></route>
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_6d1a0d89de"/></route>
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_ae3c3ec1e1"/></route>
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_08df01c902"/></route>
+<route><to uri="seda:InclusiveGateway_ef467c2e5a"/><from uri="seda:SequenceFlow_78e46a143e"/></route>
+<route><aggregate strategyRef="myAggregationStrategy" completionSize="6"><correlationExpression><header>EXCHANGE_ID</header></correlationExpression></aggregate><from uri="seda:InclusiveGateway_ef467c2e5a"/></route>

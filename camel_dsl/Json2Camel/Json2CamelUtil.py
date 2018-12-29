@@ -16,7 +16,7 @@ class Json2CamelUtil:
                 xml2file.append(et.tostring(self.buildxml(route, each_dict)))
             return xml2file
         else:
-            return et.tostring(self.buildxml(route, self.element2camel.get_as_dict()))
+            return et.tostring(self.buildxml(route, self.element2camel.get_routes_as_dict()))
 
     def buildxml(self, route, xml_ele):
         stc = xml_ele
