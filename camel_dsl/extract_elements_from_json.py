@@ -8,6 +8,8 @@ from Json2Camel import ParallelGateway2Camel
 from Json2Camel import ParallelGateway2CamelRouteXML
 from Json2Camel import EndEvent2Camel
 from Json2Camel import EndEvent2CamelRouteXML
+from camel_dsl.Json2Camel import InclusiveGateway2Camel
+from camel_dsl.Json2Camel import InclusiveGateway2CamelRouteXML
 
 logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
@@ -24,10 +26,18 @@ class JsonUtil:
                 logging.info("%s: %s" % (x, self.loaded_json[x]))
         return self.loaded_json
 
-    def from_uri(self, bpmn_ref_incomings):
-        incoming = bpmn_ref_incomings[0]
-        from_uri = "seda:" + incoming
-        return from_uri
+    def from_uri(self, bpmn_ref_incomings, multiple_uri=False):
+
+        if multiple_uri:
+            from_uris = []
+            for each_from_uri in bpmn_ref_incomings:
+                from_uris.append("seda:" + each_from_uri)
+            return from_uris
+
+        else:
+            incoming = bpmn_ref_incomings[0]
+            from_uri = "seda:" + incoming
+            return from_uri
 
     def from_source(self, msg_source):
         from_uri = 'activemq:' + 'my_queue'
@@ -82,6 +92,15 @@ class JsonUtil:
                 gen_parallel_gateway_route = ParallelGateway2CamelRouteXML.ParallelGateway2CamelRouteXML(
                     parallelGateway2Camel)
                 logging.info('generated xml is: ' + gen_parallel_gateway_route.save_parallelgateway_routes())
+
+            if each_value['node_type'] == "InclusiveGateway":
+                inclusiveGateway2Camel = InclusiveGateway2Camel.InclusiveGateway2Camel(
+                    self.from_uri(each_value['incomings'], multiple_uri=True),
+                    each_value['id'])
+                gen_inclusive_gateway_route = InclusiveGateway2CamelRouteXML.InclusiveGateway2CamelRouteXML(
+                    inclusiveGateway2Camel)
+                logging.info(
+                    'generated xml is: ' + str(gen_inclusive_gateway_route.save_inclusivegateways_input_routes()))
 
             if each_value['node_type'] == "EndEvent":
                 endEvent2Camel = EndEvent2Camel.EndEvent2Camel(self.from_uri(each_value['incomings']))

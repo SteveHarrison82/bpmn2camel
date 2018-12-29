@@ -7,9 +7,16 @@ class Json2CamelUtil:
     def __init__(self, element2camel):
         self.element2camel = element2camel
 
-    def data2xml(self, name='route'):
+    def data2xml(self, multiple_dict=None, name='route'):
         route = et.Element(name)
-        return et.tostring(self.buildxml(route, self.element2camel.get_as_dict()))
+        xml2file = []
+        if multiple_dict == True:
+            for each_dict in self.element2camel.get_in_routes_as_dict():
+                route = et.Element(name)
+                xml2file.append(et.tostring(self.buildxml(route, each_dict)))
+            return xml2file
+        else:
+            return et.tostring(self.buildxml(route, self.element2camel.get_as_dict()))
 
     def buildxml(self, route, xml_ele):
         stc = xml_ele
@@ -22,22 +29,29 @@ class Json2CamelUtil:
                 s = et.SubElement(route, 'to')
                 self.buildxml(s, each_value_of_element2camel)
 
+        # recursion: basecase
         elif isinstance(stc, basestring):
             self._handle_attribute(route, stc)
         else:
             self._handle_attribute(route, stc)
         return route
-        # recursion: basecase
 
     def _handle_attribute(self, route, stc):
         if route.tag == 'from':
-            route.set('url', stc)
+            route.set('uri', stc)
 
         elif route.tag == 'to':
-            route.set('url', stc)
+            route.set('uri', stc)
 
         elif route.tag == 'process':
             route.set('ref', stc)
+
+        elif route.tag == 'aggregate':
+            route.set('strategyRef', 'myAggregationStrategy')
+            route.set('completionSize', str(stc).decode("utf-8"))
+            correlation_exp_element = et.SubElement(route, 'correlationExpression')
+            header_element = et.SubElement(correlation_exp_element, 'header')
+            header_element.text = 'EXCHANGE_ID'
 
         else:
             route.text = stc
