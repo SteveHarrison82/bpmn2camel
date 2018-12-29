@@ -3,7 +3,7 @@ class InclusiveGateway2Camel:
         self.from_uri = from_uri
         self.intermediate_inclusive_gateway_queue = "seda:" + node_id
 
-    def get_in_routes_as_dict(self):
+    def get_routes_as_dict(self):
         in_routes_as_list_of_dict = []
         for each_from_uri in self.from_uri:
             in_routes_as_list_of_dict.append(self._get_in_route_as_dict(each_from_uri))

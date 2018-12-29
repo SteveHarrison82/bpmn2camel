@@ -11,7 +11,7 @@ class Json2CamelUtil:
         route = et.Element(name)
         xml2file = []
         if multiple_dict == True:
-            for each_dict in self.element2camel.get_in_routes_as_dict():
+            for each_dict in self.element2camel.get_routes_as_dict():
                 route = et.Element(name)
                 xml2file.append(et.tostring(self.buildxml(route, each_dict)))
             return xml2file
