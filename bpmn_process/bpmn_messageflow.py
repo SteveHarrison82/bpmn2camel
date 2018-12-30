@@ -7,3 +7,5 @@ class MessageFlow:
         self.node_name = bpmn_node_name
         self.id = bpmn_id
         self.node_type = node_type
+
+

@@ -10,6 +10,8 @@ from Json2Camel import EndEvent2Camel
 from Json2Camel import EndEvent2CamelRouteXML
 from camel_dsl.Json2Camel import InclusiveGateway2Camel
 from camel_dsl.Json2Camel import InclusiveGateway2CamelRouteXML
+from camel_dsl.Json2Camel import MessageFlow2Camel
+from camel_dsl.Json2Camel import MessageFlow2CamelRouteXML
 
 logging.basicConfig(filename='example.log', level=logging.DEBUG)
 
@@ -107,3 +109,10 @@ class JsonUtil:
                 gen_end_event_route = EndEvent2CamelRouteXML.EndEvent2CamelRouteXML(
                     endEvent2Camel)
                 logging.info('generated xml is: ' + gen_end_event_route.save_endevent_routes())
+
+            if each_value['node_type'] == "MessageFlow":
+                messageFlow2Camel = MessageFlow2Camel.MessageFlow2Camel(each_value['id'], each_value['node_name'],
+                                                                        each_value['node_type'])
+                gen_message_flow_route = MessageFlow2CamelRouteXML.MessageFlow2CamelRouteXML(
+                    messageFlow2Camel)
+                logging.info('generated xml is: ' + gen_message_flow_route.save_messageflow_routes())
