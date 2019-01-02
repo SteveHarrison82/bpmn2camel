@@ -3,7 +3,7 @@ class IntermediateMessageThrowEvent:
                  bpmn_configuration_properties=None):
 
         if bpmn_incoming is None:
-            bpmn_outgoing = []
+            bpmn_incoming = []
 
         if bpmn_outgoing is None:
             bpmn_outgoing = []
