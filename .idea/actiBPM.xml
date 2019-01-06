@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BPMNEditorStateService">
-    <stateFile url="file://$PROJECT_DIR$/test/bpmn/camunda_xml.bpmn">
+    <stateFile url="file://$PROJECT_DIR$/acceptance-test/bpmn/camunda_xml_3.bpmn">
       <view grid="false" />
     </stateFile>
   </component>

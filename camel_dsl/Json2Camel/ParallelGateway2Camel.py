@@ -1,3 +1,4 @@
+import collections
 class ParallelGateway2Camel:
     def __init__(self, from_uri, multicast=None):
         self.from_uri = from_uri
@@ -15,11 +16,13 @@ class ParallelGateway2Camel:
         return self.multicast_receipients
 
     def get_routes_as_dict(self):
-        parallel_gateway_as_dict = {}
+        parallel_gateway_as_dict = collections.OrderedDict()
 
         x = self._get_from_uri_as_dict()
         y = self._get__multicast_as_dict()
 
-        parallel_gateway_as_dict = x.copy()  # start with x's keys and values
-        parallel_gateway_as_dict.update(y)   # modifies z with y's keys and values & returns None
+        parallel_gateway_as_dict.update(x.copy())
+        parallel_gateway_as_dict.update(y)
+        #parallel_gateway_as_dict = x.copy()  # start with x's keys and values
+        #parallel_gateway_as_dict.update(y)   # modifies z with y's keys and values & returns None
         return parallel_gateway_as_dict

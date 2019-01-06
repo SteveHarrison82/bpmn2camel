@@ -1,5 +1,7 @@
 import lxml.etree as et
 from datetime import datetime
+from operator import attrgetter
+import collections
 
 
 # reference: https://code.activestate.com/recipes/577882-convert-a-nested-python-data-structure-to-xml/
@@ -28,7 +30,7 @@ class Json2CamelUtil:
 
     def buildxml(self, route, xml_ele):
         stc = xml_ele
-        if isinstance(stc, dict):
+        if isinstance(stc, dict) or isinstance(stc, collections.OrderedDict):
             for each_key, each_value in stc.iteritems():
                 s = et.SubElement(route, each_key)
                 self.buildxml(s, each_value)
@@ -77,7 +79,9 @@ class Json2CamelUtil:
                 routes.append(each_route_defined)
                 Json2CamelUtil.camel_route = []
                 Json2CamelUtil.camel_route.append(routes)
-            self.save_camel_routes(et.tostring(Json2CamelUtil.camel_route[0]))
+
+            root = Json2CamelUtil.camel_route[0]
+            self.save_camel_routes(et.tostring(root))
 
     def save_camel_routes(self, save_to_file):
         with open('camel_route' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.xml', 'w+') as file:
