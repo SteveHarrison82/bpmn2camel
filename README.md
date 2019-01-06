@@ -1,4 +1,4 @@
-# POC: bpmn2camel
+# POC: BPMN2CAMEL
 Proof of Concept [On Progress] : BPMN2CAMEL
 
 Enterprise integration pattern(EIP) is used to connect end-applications of same and different protocols.
