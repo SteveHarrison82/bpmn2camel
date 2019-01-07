@@ -3,7 +3,7 @@ Proof of Concept [On Progress] : BPMN2CAMEL
 
 Motivation:
 
-Enterprise integration pattern(EIP) is used to connect end-applications that can talk among themselves with same or different protocols.
+Enterprise integration pattern (EIP) is used to connect end-applications that can talk among themselves with same or different protocols.
 While connecting the end-applications, a work-flow is realized. These work-flow are executed by CAMEL-API in java world. CAMEL API is specizialized for realizing all possible EIPs (to connect applications)
 
 To create such CAMEL_ROUTE, an end-user could define/design the connectivity using BPMN. Camunda BPMN modeler is one such modeler that comes in two forms: as desktop app or as web-app.
