@@ -2,3 +2,7 @@
 .pyc
 .xml
 *.xml
+.idea/workspace.xml
+.idea/*.*
+.idea/*
+*.log
