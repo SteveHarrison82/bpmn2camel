@@ -19,7 +19,7 @@ The generated CAMEL_ROUTE XML can be now be fed to CAMEL-API. (This part is NOT 
 
 Summary :
 
-a. CAMUNDA-UI-Modeler -----> BPMN-XML  (Sample files for end-user to geneate)                           
+a. CAMUNDA-UI-Modeler -----> BPMN-XML  (Sample files for end-user to generate)                           
 
 b. BPMN-XML ---------------> USING PYTHON API -----> CAMEL-DSL_XML  (Covered in this repository)
 
