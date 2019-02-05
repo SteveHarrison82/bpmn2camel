@@ -13,5 +13,15 @@ The CAMEL_ROUTE XML can then be fed to CAMEL API. This way, end to end-connectiv
 
 In this repository there is a crude attempt to MAP the BPMN_XML to CAMEL_ROUTE XML.
 
-The generated CAMEL_ROUTE XML can be fed to CAMEL-API (which is NOT covered in this repository.)
 Additonal note: As CAMEL-API is written  using JAVA-API, configuring CAMEL-API module using an agnositic and programing-language independent DSL, such as CAMEL_ROUTE XML, is therefore a good approach.
+
+The generated CAMEL_ROUTE XML can be now be fed to CAMEL-API. (This part is NOT covered in this repository and must be done using JAVA)
+
+Summary :
+
+a. CAMUNDA-UI-Modeler -----> BPMN-XML  (Sample files for end-user to geneate)                           
+
+b. BPMN-XML ---------------> USING PYTHON API -----> CAMEL-DSL_XML  (Covered in this repository)
+
+c. CAMEL-DSL_XML-----------> USING JAVA API---------->CAMEL (Not covered in this repository)
+
