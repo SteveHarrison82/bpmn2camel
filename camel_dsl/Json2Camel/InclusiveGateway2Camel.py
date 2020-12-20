@@ -1,7 +1,8 @@
 import collections
 class InclusiveGateway2Camel:
-    def __init__(self, from_uri, node_id):
+    def __init__(self, from_uri, node_id, to_uri):
         self.from_uri = from_uri
+        self.to_uri = to_uri
         self.intermediate_inclusive_gateway_queue = "seda:" + node_id
 
     def get_routes_as_dict(self):
@@ -22,4 +23,5 @@ class InclusiveGateway2Camel:
         inclusive_gatewawy_out_routes = collections.OrderedDict()
         inclusive_gatewawy_out_routes['from'] = self.intermediate_inclusive_gateway_queue
         inclusive_gatewawy_out_routes['aggregate'] = completion_size
+        inclusive_gatewawy_out_routes['to'] = self.to_uri
         return inclusive_gatewawy_out_routes

@@ -98,7 +98,7 @@ class JsonUtil:
             if each_value['node_type'] == "InclusiveGateway":
                 inclusiveGateway2Camel = InclusiveGateway2Camel.InclusiveGateway2Camel(
                     self.from_uri(each_value['incomings'], multiple_uri=True),
-                    each_value['id'])
+                    each_value['id'], self.to_uri(each_value['outgoings']))
                 gen_inclusive_gateway_route = InclusiveGateway2CamelRouteXML.InclusiveGateway2CamelRouteXML(
                     inclusiveGateway2Camel)
                 logging.info(
