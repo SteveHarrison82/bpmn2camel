@@ -70,7 +70,7 @@ class BpmnXml2py:
             if each_element_of_mf.__dict__['_name'] == "bpmn_subProcess":
                 pass
 
-            print each_element_of_mf['name']
+            print (each_element_of_mf['name'])
 
     def _extract_extenstion_configuration_metadata(self, bpmnxml2py):
         self.mf_name = bpmnxml2py.bpmn_definitions.bpmn_process['name']

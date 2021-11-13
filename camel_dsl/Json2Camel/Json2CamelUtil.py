@@ -31,7 +31,7 @@ class Json2CamelUtil:
     def buildxml(self, route, xml_ele):
         stc = xml_ele
         if isinstance(stc, dict) or isinstance(stc, collections.OrderedDict):
-            for each_key, each_value in stc.iteritems():
+            for each_key, each_value in stc.items():
                 s = et.SubElement(route, each_key)
                 self.buildxml(s, each_value)
         elif isinstance(stc, tuple) or isinstance(stc, list):
@@ -40,7 +40,7 @@ class Json2CamelUtil:
                 self.buildxml(s, each_value_of_element2camel)
 
         # recursion: basecase
-        elif isinstance(stc, basestring):
+        elif isinstance(stc, str):
             self._handle_attribute(route, stc)
         else:
             self._handle_attribute(route, stc)
@@ -81,7 +81,8 @@ class Json2CamelUtil:
                 Json2CamelUtil.camel_route.append(routes)
 
             root = Json2CamelUtil.camel_route[0]
-            self.save_camel_routes(et.tostring(root))
+            save_route = et.tostring(root).decode("utf-8")
+            self.save_camel_routes(save_route)
 
     def save_camel_routes(self, save_to_file):
         with open('camel_route' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.xml', 'w+') as file:

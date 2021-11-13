@@ -10,6 +10,6 @@ class MessageStartEvent2CamelRouteXML:
         jcu = Json2CamelUtil(self.messageStartEvent2Camel)
         xml2file = jcu.data2xml()
         with open('messagestartevent_routes' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.xml', 'a') as file:
-            file.write(xml2file)
+            file.write(xml2file.decode("utf-8"))
             file.write("\n")
         return xml2file
