@@ -1,21 +1,21 @@
 import json
-import logging
-from Json2Camel import ServiceTask2Camel
-from Json2Camel import ServiceTask2CamelRouteXML
-from Json2Camel import MessageStartEvent2Camel
-from Json2Camel import MessageStartEvent2CamelRouteXML
-from Json2Camel import ParallelGateway2Camel
-from Json2Camel import ParallelGateway2CamelRouteXML
-from Json2Camel import EndEvent2Camel
-from Json2Camel import EndEvent2CamelRouteXML
+#import logging
+from .Json2Camel import ServiceTask2Camel
+from .Json2Camel import ServiceTask2CamelRouteXML
+from .Json2Camel import MessageStartEvent2Camel
+from .Json2Camel import MessageStartEvent2CamelRouteXML
+from .Json2Camel import ParallelGateway2Camel
+from .Json2Camel import ParallelGateway2CamelRouteXML
+from .Json2Camel import EndEvent2Camel
+from .Json2Camel import EndEvent2CamelRouteXML
 from camel_dsl.Json2Camel import InclusiveGateway2Camel
 from camel_dsl.Json2Camel import InclusiveGateway2CamelRouteXML
 from camel_dsl.Json2Camel import MessageFlow2Camel
 from camel_dsl.Json2Camel import MessageFlow2CamelRouteXML
 
-logging.basicConfig(filename='example.log', level=logging.DEBUG)
+# logging.basicConfig(filename='example.log', level=# logging.DEBUG)
 
-json_file = "../acceptance-test/bpmn2json.json"
+json_file = "bpmn2json.json"
 
 
 class JsonUtil:
@@ -25,7 +25,8 @@ class JsonUtil:
             bpmn_elements = file.read()
             self.loaded_json = json.loads(bpmn_elements)
             for x in self.loaded_json:
-                logging.info("%s: %s" % (x, self.loaded_json[x]))
+                pass
+                # logging.info("%s: %s" % (x, self.loaded_json[x]))
         return self.loaded_json
 
     def from_uri(self, bpmn_ref_incomings, multiple_uri=False):
@@ -66,17 +67,18 @@ class JsonUtil:
     def find_camel_elements(self):
 
         camel_elements = self.load_elements()
-        for each_key, each_value in camel_elements.iteritems():
-            logging.info('node is: ' + each_key)
-            logging.info('node content is: ' + str(each_value))
-            logging.info('node type is: ' + str(each_value['node_type']))
+        for each_key, each_value in camel_elements.items():
+            # logging.info('node is: ' + each_key)
+            # logging.info('node content is: ' + str(each_value))
+            # logging.info('node type is: ' + str(each_value['node_type']))
             if each_value['node_type'] == "ServiceTask":
                 serviceTask2Camel = ServiceTask2Camel.ServiceTask2Camel(self.from_uri(each_value['incomings']),
                                                                         self.to_uri(each_value['outgoings']),
                                                                         self.process_to_execute(each_value['node_name'])
                                                                         )
                 gen_servicetask_route = ServiceTask2CamelRouteXML.ServiceTask2CamelRouteXML(serviceTask2Camel)
-                logging.info('generated xml is: ' + gen_servicetask_route.save_servicetask_routes())
+                gen_servicetask_route.save_servicetask_routes()
+                # logging.info('generated xml is: ' + gen_servicetask_route.save_servicetask_routes())
 
             if each_value['node_type'] == "StartEvent":
                 messageStartEvent2Camel = MessageStartEvent2Camel.MessageStartEvent2Camel(self.from_source('my_queue'),
@@ -84,7 +86,8 @@ class JsonUtil:
                                                                                               each_value['outgoings']))
                 gen_message_start_event_route = MessageStartEvent2CamelRouteXML.MessageStartEvent2CamelRouteXML(
                     messageStartEvent2Camel)
-                logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
+                gen_message_start_event_route.save_message_start_event_routes()
+                # logging.info('generated xml is: ' + gen_message_start_event_route.save_message_start_event_routes())
 
             if each_value['node_type'] == "ParallelGateway":
                 parallelGateway2Camel = ParallelGateway2Camel.ParallelGateway2Camel(
@@ -93,7 +96,8 @@ class JsonUtil:
                         each_value['outgoings']))
                 gen_parallel_gateway_route = ParallelGateway2CamelRouteXML.ParallelGateway2CamelRouteXML(
                     parallelGateway2Camel)
-                logging.info('generated xml is: ' + gen_parallel_gateway_route.save_parallelgateway_routes())
+                gen_parallel_gateway_route.save_parallelgateway_routes()
+                # logging.info('generated xml is: ' + gen_parallel_gateway_route.save_parallelgateway_routes())
 
             if each_value['node_type'] == "InclusiveGateway":
                 inclusiveGateway2Camel = InclusiveGateway2Camel.InclusiveGateway2Camel(
@@ -101,18 +105,21 @@ class JsonUtil:
                     each_value['id'], self.to_uri(each_value['outgoings']))
                 gen_inclusive_gateway_route = InclusiveGateway2CamelRouteXML.InclusiveGateway2CamelRouteXML(
                     inclusiveGateway2Camel)
-                logging.info(
-                    'generated xml is: ' + str(gen_inclusive_gateway_route.save_inclusivegateways_input_routes()))
+                gen_inclusive_gateway_route.save_inclusivegateways_input_routes()
+                # logging.info(
+                #    'generated xml is: ' + str(gen_inclusive_gateway_route.save_inclusivegateways_input_routes()))
 
             if each_value['node_type'] == "EndEvent":
                 endEvent2Camel = EndEvent2Camel.EndEvent2Camel(self.from_uri(each_value['incomings']))
                 gen_end_event_route = EndEvent2CamelRouteXML.EndEvent2CamelRouteXML(
                     endEvent2Camel)
-                logging.info('generated xml is: ' + gen_end_event_route.save_endevent_routes())
+                gen_end_event_route.save_endevent_routes()
+                ## logging.info('generated xml is: ' + gen_end_event_route.save_endevent_routes())
 
             if each_value['node_type'] == "MessageFlow":
                 messageFlow2Camel = MessageFlow2Camel.MessageFlow2Camel(each_value['id'], each_value['node_name'],
                                                                         each_value['node_type'])
                 gen_message_flow_route = MessageFlow2CamelRouteXML.MessageFlow2CamelRouteXML(
                     messageFlow2Camel)
-                logging.info('generated xml is: ' + gen_message_flow_route.save_messageflow_routes())
+                gen_message_flow_route.save_messageflow_routes()
+                ## logging.info('generated xml is: ' + gen_message_flow_route.save_messageflow_routes())

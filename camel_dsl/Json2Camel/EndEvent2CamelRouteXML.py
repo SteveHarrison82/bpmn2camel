@@ -11,7 +11,7 @@ class EndEvent2CamelRouteXML:
         jcu = Json2CamelUtil(self.endEvent2Camel)
         xml2file = jcu.data2xml()
         with open('endevent_routes' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.xml', 'a') as file:
-            file.write(xml2file)
+            file.write(xml2file.decode("utf-8"))
             file.write("\n")
         return xml2file
 

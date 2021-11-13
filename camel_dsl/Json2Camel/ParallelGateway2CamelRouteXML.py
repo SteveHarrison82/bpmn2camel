@@ -11,6 +11,6 @@ class ParallelGateway2CamelRouteXML:
         jcu = Json2CamelUtil(self.parallelGateway2Camel)
         xml2file = jcu.data2xml()
         with open('parallel_gateway' + datetime.now().strftime("%Y%m%d-%H%M%S") + '.xml', 'a') as file:
-            file.write(xml2file)
+            file.write(xml2file.decode("utf-8"))
             file.write("\n")
         return xml2file
